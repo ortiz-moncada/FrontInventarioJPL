@@ -48,6 +48,7 @@
   import { ref, onMounted } from 'vue';
   import { postData } from '../services/apiClient.js';
   import { useRouter } from 'vue-router';
+  import {useAuthStore} from '../store/useAuth.js';
 
   
   
@@ -56,6 +57,7 @@
   const passwordError = ref('');  
   const router = useRouter();
   const showForm = ref(false);
+  const authStore = useAuthStore();
   
   onMounted(() => {
     showForm.value = true;
@@ -63,13 +65,15 @@
   
   const login = async () => {
     try {
+
       const response = await postData('/login', { email: email.value, password: password.value });
       const token = response.token;
-  
+      console.log('Token recibido:', response);
+      
       if (token) {
-        localStorage.setItem('token', token);
-        console.log('Token guardado:', localStorage.getItem('token'));
-        router.push("/articulos");
+       authStore.token = response.token;
+        console.log('Token guardado:', authStore.token);
+        router.replace("/articulos");
       } else {
         console.log('Respuesta sin token:', response);
       }
@@ -83,6 +87,7 @@
       }
     }
   };
+
   </script>
   
   <style scoped>
