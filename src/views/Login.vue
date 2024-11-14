@@ -3,7 +3,7 @@
       <q-card class="my-card" bordered>
         <div class="header-login">
             
-            <p>INVENTARIO JPL</p>
+            <p>INVENTARIO </p>
         </div>
     
         <div class="img-login">
@@ -48,6 +48,8 @@
   import { ref, onMounted } from 'vue';
   import { postData } from '../services/apiClient.js';
   import { useRouter } from 'vue-router';
+  import { useAuthStore } from '../store/useAuth.js';
+  const Store =useAuthStore() 
 
   
   
@@ -63,17 +65,18 @@
   
   const login = async () => {
     try {
-      const response = await postData('/login', { email: email.value, password: password.value });
+      const response = await postData('/usuarios/login', { email: email.value, contraseña: password.value });
       const token = response.token;
-  
+      console.log(response);
+      
       if (token) {
-        localStorage.setItem('token', token);
-        console.log('Token guardado:', localStorage.getItem('token'));
-        router.push("/articulos");
+        Store.setToken(response.token)
+        router.replace("/articulos")
       } else {
         console.log('Respuesta sin token:', response);
       }
     } catch (error) {
+      console.log(error);
       
       if (error.response && error.response.data.error === 'Contraseña incorrecta') {
         passwordError.value = 'La contraseña es incorrecta';  

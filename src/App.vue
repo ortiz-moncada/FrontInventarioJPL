@@ -47,7 +47,7 @@
       <q-toolbar>
         <q-toolbar-title>
           
-          <div class="text-footer">INVENTARIO JPL - 2024 © Todos los derechos reservados  </div>
+          <div class="text-footer">INVENTARIO - 2024 © Todos los derechos reservados  </div>
         </q-toolbar-title>
       </q-toolbar>
     </q-footer>
